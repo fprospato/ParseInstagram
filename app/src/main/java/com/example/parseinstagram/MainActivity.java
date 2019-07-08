@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,15 +35,69 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
 
+        setupButtons();
+    }
+
+    private void setupButtons() {
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasTextCheck()) {
+                    final String username = etUsername.getText().toString().trim();
+                    final String password = etPassword.getText().toString().trim();
+                    signup(username, password);
+                }
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = etUsername.getText().toString();
-                final String password = etPassword.getText().toString();
-                login(username, password);
+                if (hasTextCheck()) {
+                    final String username = etUsername.getText().toString().trim();
+                    final String password = etPassword.getText().toString().trim();
+                    login(username, password);
+                }
             }
         });
     }
+
+    private boolean hasTextCheck() {
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (username.equals("") || password.equals("")) {
+            Toast.makeText(this, "Please enter both a username and password", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private void signup(String username, String password) {
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d(TAG, "Signup successful");
+
+                    final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+
+                    finish();
+                } else {
+                    Log.e(TAG, "Signup was not successful");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     private void login(String username, String password) {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
