@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     private Button btnSignup;
+    private ProgressBar pb;
 
 
     @Override
@@ -30,12 +32,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkForCurrentUser();
+
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
+        pb = findViewById(R.id.pb);
 
         setupButtons();
+    }
+
+    private void checkForCurrentUser() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+            goToHome();
+        }
     }
 
     private void setupButtons() {
@@ -43,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (hasTextCheck()) {
+                    pb.setVisibility(View.VISIBLE);
                     final String username = etUsername.getText().toString().trim();
                     final String password = etPassword.getText().toString().trim();
                     signup(username, password);
@@ -54,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (hasTextCheck()) {
+                    pb.setVisibility(View.VISIBLE);
                     final String username = etUsername.getText().toString().trim();
                     final String password = etPassword.getText().toString().trim();
                     login(username, password);
@@ -83,13 +98,12 @@ public class MainActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
+                pb.setVisibility(View.INVISIBLE);
+
                 if (e == null) {
                     Log.d(TAG, "Signup successful");
 
-                    final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-                    finish();
+                    goToHome();
                 } else {
                     Log.e(TAG, "Signup was not successful");
                     e.printStackTrace();
@@ -103,13 +117,12 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
+                pb.setVisibility(View.INVISIBLE);
+
                 if (e == null) {
                     Log.d(TAG, "Login successful");
 
-                    final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-                    finish();
+                    goToHome();
                 } else {
                     Log.e(TAG, "Login was not successful");
                     e.printStackTrace();
@@ -118,5 +131,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void goToHome() {
+        final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(intent);
+
+        finish();
+    }
 
 }
