@@ -3,6 +3,8 @@ package com.example.parseinstagram.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +24,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.parseinstagram.BitmapScaler;
+import com.example.parseinstagram.HomeActivity;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseException;
@@ -100,6 +103,8 @@ public class ComposeFragment extends Fragment {
 
     private void createPost(String description, ParseFile imageFile, ParseUser user) {
 
+        btnCreate.setEnabled(false);
+
         final Post newPost = new Post();
         newPost.setDescription(description);
         newPost.setImage(imageFile);
@@ -113,11 +118,13 @@ public class ComposeFragment extends Fragment {
 
                     etDescription.setText("");
                     ivPreview.setImageResource(0);
+                    btnGetImage.setText("Camera");
                 } else {
                     Log.e(TAG, "Error saving post");
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error creating post", Toast.LENGTH_SHORT).show();
                 }
+                btnCreate.setEnabled(true);
             }
         });
     }
@@ -156,12 +163,12 @@ public class ComposeFragment extends Fragment {
             if (resultCode == RESULT_OK) {
 
                 //Code for this if statement was told to only copy and not fully understand what's going on
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Bitmap takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
 
                 File takenPhotoUri = getPhotoFileUri(photoFileName);
                 Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
 
-                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 400);
+                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, HomeActivity.screenWidth);
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
@@ -181,9 +188,49 @@ public class ComposeFragment extends Fragment {
                 }
 
                 ivPreview.setImageBitmap(takenImage);
+
+                if (photoFile != null || ivPreview.getDrawable() != null) {
+                    ivPreview.getLayoutParams().height = HomeActivity.screenWidth;
+                    btnGetImage.setText("Replace Image");
+                } else {
+                    ivPreview.getLayoutParams().height = 0;
+                    btnGetImage.setText("Camera");
+                }
+
             } else {
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+
+    /*
+     * Code for this if statement was told to only copy and not fully understand what's going on
+     */
+    public Bitmap rotateBitmapOrientation(String photoFilePath) {
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath, bounds);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(photoFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+        int rotationAngle = 0;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+
+        return rotatedBitmap;
     }
 }

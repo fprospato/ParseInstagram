@@ -23,19 +23,28 @@ public class HomeActivity extends AppCompatActivity {
 
     public static int screenWidth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        getScreenWidth();
+
+        setupNavigationBar();
+    }
+
+
+    /*
+     * gets screen width to use for the height of ivPostImage in item_post
+     */
+    private void getScreenWidth() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         screenWidth = size.x;
-
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        setupNavigationBar();
     }
 
 
