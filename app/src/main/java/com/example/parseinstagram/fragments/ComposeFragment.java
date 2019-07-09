@@ -47,7 +47,6 @@ public class ComposeFragment extends Fragment {
 
     private EditText etDescription;
     private Button btnCreate;
-    private Button btnRefresh;
     private Button btnGetImage;
     private ImageView ivPreview;
 
@@ -65,7 +64,6 @@ public class ComposeFragment extends Fragment {
 
         etDescription = view.findViewById(R.id.etDescription);
         btnCreate = view.findViewById(R.id.btnCreate);
-        btnRefresh = view.findViewById(R.id.btnRefresh);
         btnGetImage = view.findViewById(R.id.btnGetImage);
         ivPreview = view.findViewById(R.id.ivPreview);
 
@@ -86,15 +84,8 @@ public class ComposeFragment extends Fragment {
 
                     final ParseFile parseFile = new ParseFile(photoFile);
 
-                    //createPost(description, parseFile, user);
+                    createPost(description, parseFile, user);
                 }
-            }
-        });
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //loadTopPosts();
             }
         });
 

@@ -1,8 +1,9 @@
 package com.example.parseinstagram;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +21,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    public static int screenWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -42,18 +49,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
-                        //TODO: swap fragment
                         fragment = new PostsFragment();
-                        Toast.makeText(HomeActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_compose:
                         fragment = new ComposeFragment();
-                        Toast.makeText(HomeActivity.this, "Compose", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_profile:
                         //TODO: swap fragment
                         fragment = new ComposeFragment();
-                        Toast.makeText(HomeActivity.this, "Profile", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
