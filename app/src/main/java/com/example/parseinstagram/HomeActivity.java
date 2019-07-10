@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void setupNavigationBar() {
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

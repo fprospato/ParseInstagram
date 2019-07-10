@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/action_home"
-        android:icon="?attr/homeAsUpIndicator"
         android:title="Home"
+        android:icon="@drawable/selector_button_home"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_compose"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Compose"
-        app:showAsAction="always" />
+        android:icon="@drawable/selector_button_compose"
+        app:showAsAction="always"
+        android:title="Compose" />
     <item
         android:id="@+id/action_profile"
-        android:icon="@android:drawable/presence_offline"
-        android:title="Profile"
-        app:showAsAction="always" />
+        android:icon="@drawable/selector_button_profile"
+        app:showAsAction="always"
+        android:title="Profile" />
 </menu>

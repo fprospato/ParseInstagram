@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,7 @@ public class ComposeFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     private File photoFile;
 
+    ProgressBar pb;
     private EditText etDescription;
     private Button btnCreate;
     private Button btnGetImage;
@@ -65,10 +67,13 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        pb = view.findViewById(R.id.pb);
         etDescription = view.findViewById(R.id.etDescription);
         btnCreate = view.findViewById(R.id.btnCreate);
         btnGetImage = view.findViewById(R.id.btnGetImage);
         ivPreview = view.findViewById(R.id.ivPreview);
+
+        ivPreview.getLayoutParams().height = 0;
 
         setupButtons();
     }
@@ -102,8 +107,10 @@ public class ComposeFragment extends Fragment {
 
 
     private void createPost(String description, ParseFile imageFile, ParseUser user) {
-
+        pb.setVisibility(View.VISIBLE);
         btnCreate.setEnabled(false);
+        etDescription.setEnabled(false);
+        btnGetImage.setEnabled(false);
 
         final Post newPost = new Post();
         newPost.setDescription(description);
@@ -124,6 +131,10 @@ public class ComposeFragment extends Fragment {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error creating post", Toast.LENGTH_SHORT).show();
                 }
+
+                pb.setVisibility(View.INVISIBLE);
+                btnGetImage.setEnabled(true);
+                etDescription.setEnabled(true);
                 btnCreate.setEnabled(true);
             }
         });

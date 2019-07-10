@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.parseinstagram.PostsAdapter;
 import com.example.parseinstagram.R;
@@ -25,6 +26,7 @@ public class PostsFragment extends Fragment {
 
     private final static String TAG = "PostsFragment";
 
+    private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvPosts;
     private PostsAdapter adapter;
     private List<Post> mPosts;
@@ -41,6 +43,7 @@ public class PostsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rvPosts = view.findViewById(R.id.rvPosts);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         mPosts = new ArrayList<>();
 
@@ -50,8 +53,25 @@ public class PostsFragment extends Fragment {
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
         loadTopPosts();
+
+        setupPullToRefresh();
     }
 
+
+    private void setupPullToRefresh() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadTopPosts();
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+    }
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
@@ -62,6 +82,8 @@ public class PostsFragment extends Fragment {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
+                    adapter.clear();
+
                     mPosts.addAll(objects);
                     adapter.notifyDataSetChanged();
 
@@ -75,6 +97,8 @@ public class PostsFragment extends Fragment {
                     Log.e(TAG, "Error getting posts.");
                     e.printStackTrace();
                 }
+
+                swipeContainer.setRefreshing(false);
             }
         });
     }
