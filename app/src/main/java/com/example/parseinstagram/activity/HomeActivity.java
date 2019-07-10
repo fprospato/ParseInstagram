@@ -1,9 +1,12 @@
 package com.example.parseinstagram.activity;
 
+import android.app.ActionBar;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
         getScreenWidth();
 
         setupNavigationBar();
+
+        setupActionBar();
     }
 
 
@@ -47,6 +52,18 @@ public class HomeActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
         screenWidth = size.x;
+    }
+
+
+    private void setupActionBar() {
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.insta_grey)));
+
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.insta_action_bar);
+        //getSupportActionBar().setElevation(0);
+        View view = getSupportActionBar().getCustomView();
     }
 
 

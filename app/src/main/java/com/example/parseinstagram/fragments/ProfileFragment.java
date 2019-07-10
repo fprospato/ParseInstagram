@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,6 +32,8 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
 
     private final static String TAG = "ProfileFragment";
+
+    private SwipeRefreshLayout swipeContainer;
 
     private ImageView ivProfilePhoto;
     private TextView tvPostCount;
@@ -57,6 +60,7 @@ public class ProfileFragment extends Fragment {
         tvName = view.findViewById(R.id.tvName);
         tvBio = view.findViewById(R.id.tvBio);
 
+        swipeContainer = view.findViewById(R.id.swipeContainer);
         rvPosts = view.findViewById(R.id.rvPosts);
         mPosts = new ArrayList<>();
 
@@ -65,11 +69,26 @@ public class ProfileFragment extends Fragment {
 
         rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
+        setupPullToRefresh();
+
         setUserInfo();
 
         getPosts();
     }
 
+    private void setupPullToRefresh() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPosts();
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
 
     private void setUserInfo() {
         String fullname = ParseUser.getCurrentUser().getString("fullname");
@@ -98,6 +117,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
+                    adapter.clear();
+
                     tvPostCount.setText(String.valueOf(objects.size()));
 
                     mPosts.addAll(objects);
@@ -107,6 +128,8 @@ public class ProfileFragment extends Fragment {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error getting user's post count", Toast.LENGTH_SHORT).show();
                 }
+
+                swipeContainer.setRefreshing(false);
             }
         });
     }
