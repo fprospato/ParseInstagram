@@ -2,6 +2,7 @@ package com.example.parseinstagram;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.parseinstagram.activity.HomeActivity;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseFile;
 
@@ -57,6 +60,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvName;
         private ImageView ivPostImage;
         private TextView tvDescription;
+        private TextView tvTime;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -66,6 +70,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvName = itemView.findViewById(R.id.tvName);
             ivPostImage = itemView.findViewById(R.id.ivPostImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvTime = itemView.findViewById(R.id.tvTime);
 
 
             ivPostImage.getLayoutParams().height = HomeActivity.screenWidth;
@@ -74,6 +79,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(Post post) {
             tvName.setText(post.getUser().getUsername());
             tvDescription.setText(Html.fromHtml("<b>" + post.getUser().getUsername() + "</b>"+ " " + post.getDescription()));
+
+            String relativeDate = "";
+            long dateMillis = post.getCreatedAt().getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.FORMAT_ABBREV_RELATIVE).toString();
+            tvTime.setText(relativeDate);
+
+            ParseFile profileImage = post.getUser().getParseFile("profileImage");
+            if (profileImage != null) {
+                Glide.with(context)
+                        .load(profileImage.getUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(ivProfilePhoto);
+            }
 
             ParseFile postImage = post.getImage();
             if (postImage != null) {

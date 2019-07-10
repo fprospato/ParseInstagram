@@ -25,7 +25,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.parseinstagram.BitmapScaler;
-import com.example.parseinstagram.HomeActivity;
+import com.example.parseinstagram.activity.HomeActivity;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseException;
