@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.parseinstagram.PostsAdapter;
+import com.example.parseinstagram.adapter.PostsAdapter;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.model.Post;
 import com.parse.FindCallback;
@@ -97,6 +98,7 @@ public class PostsFragment extends Fragment {
                 } else {
                     Log.e(TAG, "Error getting posts.");
                     e.printStackTrace();
+                    Toast.makeText(getContext(), "Error getting posts", Toast.LENGTH_SHORT).show();
                 }
 
                 swipeContainer.setRefreshing(false);

@@ -1,4 +1,4 @@
-package com.example.parseinstagram;
+package com.example.parseinstagram.adapter;
 
 import android.content.Context;
 import android.text.Html;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.parseinstagram.R;
 import com.example.parseinstagram.activity.HomeActivity;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseFile;

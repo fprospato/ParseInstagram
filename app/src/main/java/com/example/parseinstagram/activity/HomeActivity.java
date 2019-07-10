@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.fragments.ComposeFragment;
 import com.example.parseinstagram.fragments.PostsFragment;
+import com.example.parseinstagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -66,8 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new ComposeFragment();
                         break;
                     case R.id.action_profile:
-                        //TODO: swap fragment
-                        fragment = new ComposeFragment();
+                        fragment = new ProfileFragment();
                         break;
                     default:
                         break;
