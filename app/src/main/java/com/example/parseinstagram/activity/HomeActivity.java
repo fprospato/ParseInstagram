@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,7 +78,11 @@ public class HomeActivity extends AppCompatActivity {
         ImageView ivCenter = view.findViewById(R.id.ivCenter);
         ImageView ivRight = view.findViewById(R.id.ivRight);
         TextView tvCenter = view.findViewById(R.id.tvCenter);
+        TextView tvDone = view.findViewById(R.id.tvDone);
+        Button btnDone = view.findViewById(R.id.btnDone);
 
+        tvDone.setVisibility(View.INVISIBLE);
+        btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.VISIBLE);
         ivCenter.setVisibility(View.VISIBLE);
         ivRight.setVisibility(View.VISIBLE);
@@ -97,7 +102,11 @@ public class HomeActivity extends AppCompatActivity {
         ImageView ivCenter = view.findViewById(R.id.ivCenter);
         ImageView ivRight = view.findViewById(R.id.ivRight);
         TextView tvCenter = view.findViewById(R.id.tvCenter);
+        TextView tvDone = view.findViewById(R.id.tvDone);
+        Button btnDone = view.findViewById(R.id.btnDone);
 
+        tvDone.setVisibility(View.INVISIBLE);
+        btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.INVISIBLE);
         ivCenter.setVisibility(View.INVISIBLE);
         ivRight.setVisibility(View.INVISIBLE);
@@ -117,7 +126,11 @@ public class HomeActivity extends AppCompatActivity {
         ImageView ivCenter = view.findViewById(R.id.ivCenter);
         ImageView ivRight = view.findViewById(R.id.ivRight);
         TextView tvCenter = view.findViewById(R.id.tvCenter);
+        TextView tvDone = view.findViewById(R.id.tvDone);
+        Button btnDone = view.findViewById(R.id.btnDone);
 
+        tvDone.setVisibility(View.INVISIBLE);
+        btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.INVISIBLE);
         ivCenter.setVisibility(View.INVISIBLE);
         ivRight.setVisibility(View.VISIBLE);

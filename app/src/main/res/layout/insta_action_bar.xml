@@ -49,4 +49,26 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivCenter" />
+
+    <TextView
+        android:id="@+id/tvDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:textColor="#328BDC"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCenter"
+        app:layout_constraintEnd_toEndOf="@+id/ivRight"
+        app:layout_constraintTop_toTopOf="@+id/tvCenter" />
+
+    <Button
+        android:id="@+id/btnDone"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvDone"
+        app:layout_constraintTop_toTopOf="@+id/ivCenter" />
 </androidx.constraintlayout.widget.ConstraintLayout>
