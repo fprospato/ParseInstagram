@@ -3,6 +3,7 @@ package com.example.parseinstagram.adapter;
 import android.content.Context;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,18 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.activity.HomeActivity;
 import com.example.parseinstagram.model.Post;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+
+    private final static String TAG = "PostsAdapter";
 
     private Context context;
     private List<Post> posts;
@@ -65,6 +73,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDescription;
         private TextView tvTime;
 
+        private TextView tvLikeCount;
         private ImageView ivLike;
         private Button btnLike;
 
@@ -81,6 +90,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvTime = itemView.findViewById(R.id.tvTime);
             ivLike = itemView.findViewById(R.id.ivLike);
             btnLike = itemView.findViewById(R.id.btnLike);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
 
             ivPostImage.getLayoutParams().height = HomeActivity.screenWidth;
 
@@ -95,6 +105,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(Post post) {
             tvName.setText(post.getUser().getUsername());
             tvDescription.setText(Html.fromHtml("<b>" + post.getUser().getUsername() + "</b>"+ " " + post.getDescription()));
+
+            tvLikeCount.setText(String.valueOf(post.getLikeCount()) + ((post.getLikeCount() == 1) ? " like" : " likes"));
 
             String relativeDate = "";
             long dateMillis = post.getCreatedAt().getTime();
@@ -115,21 +127,62 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Glide.with(context).load(postImage.getUrl()).into(ivPostImage);
             }
 
-            if (didCurrentUserLike()) {
+            if (post.didCurrentUserLike) {
                 ivLike.setImageResource(R.drawable.ufi_heart_active);
             } else {
                 ivLike.setImageResource(R.drawable.ufi_heart);
             }
         }
 
-        private boolean didCurrentUserLike() {
-            return false;
-        }
-
         private void likePost() {
+            if (post.didCurrentUserLike) {
+                tvLikeCount.setText(String.valueOf(post.getLikeCount() - 1) + ((post.getLikeCount() == 1) ? " like" : " likes"));
+                ivLike.setImageResource(R.drawable.ufi_heart);
 
+                post.increment("likeCount", -1);
+                post.saveInBackground();
+
+                removeLike();
+            } else {
+                ivLike.setImageResource(R.drawable.ufi_heart_active);
+                tvLikeCount.setText(String.valueOf(post.getLikeCount() + 1) + ((post.getLikeCount() == 1) ? " like" : " likes"));
+
+                post.increment("likeCount");
+                post.saveInBackground();
+
+                sendLike();
+            }
+
+            post.didCurrentUserLike = !post.didCurrentUserLike;
         }
 
+        private void sendLike() {
+            ParseObject newLike = new ParseObject("Like");
+            newLike.put("user", ParseUser.getCurrentUser());
+            newLike.put("post", post);
+
+            newLike.saveInBackground();
+        }
+
+        private void removeLike() {
+            ParseQuery<ParseObject> likeQuery = ParseQuery.getQuery("Like");
+            likeQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+            likeQuery.whereEqualTo("post", post);
+
+            likeQuery.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                         for (int i = 0; i < objects.size(); i++) {
+                             objects.get(i).deleteInBackground();
+                         }
+                    } else {
+                        Log.e(TAG, "Error finding like.");
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     public void clear() {
@@ -137,7 +190,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // Add a list of items -- change to type used
     public void addAll(List<Post> list) {
         posts.addAll(list);
         notifyDataSetChanged();

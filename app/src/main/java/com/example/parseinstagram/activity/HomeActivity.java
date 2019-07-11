@@ -1,6 +1,7 @@
 package com.example.parseinstagram.activity;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -81,6 +82,8 @@ public class HomeActivity extends AppCompatActivity {
         ivCenter.setVisibility(View.VISIBLE);
         ivRight.setVisibility(View.VISIBLE);
         tvCenter.setVisibility(View.INVISIBLE);
+
+        ivRight.setImageResource(R.drawable.direct);
     }
 
     private void setComposeBarDesign() {
@@ -117,10 +120,23 @@ public class HomeActivity extends AppCompatActivity {
 
         ivLeft.setVisibility(View.INVISIBLE);
         ivCenter.setVisibility(View.INVISIBLE);
-        ivRight.setVisibility(View.INVISIBLE);
+        ivRight.setVisibility(View.VISIBLE);
         tvCenter.setVisibility(View.VISIBLE);
 
         tvCenter.setText(ParseUser.getCurrentUser().getUsername());
+
+        ivRight.setImageResource(R.drawable.insta_logout);
+
+        ivRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+
+                final Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void setupNavigationBar() {

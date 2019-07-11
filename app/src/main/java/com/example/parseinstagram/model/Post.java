@@ -9,12 +9,14 @@ import com.parse.ParseUser;
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
+    private final static String TAG = "Post";
+
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_IMAGE = "image";
     private static final String KEY_USER = "user";
-    private static final String KEY_CREATED_AT = "createdAt";
+    private static final String KEY_LIKE_COUNT = "likeCount";
 
-    private static boolean didCurrentUserLike = false;
+    public boolean didCurrentUserLike;
 
 
     public String getDescription() {
@@ -40,8 +42,13 @@ public class Post extends ParseObject {
         put(KEY_USER, user);
     }
 
-    public boolean getIfUserLike() { return didCurrentUserLike; }
-    public void setIfUserLike(boolean didLike) { didCurrentUserLike = didLike; }
+    public Integer getLikeCount() {
+        return getInt(KEY_LIKE_COUNT);
+    }
+    public void setLikeCount(Integer count) {
+        put(KEY_LIKE_COUNT, count);
+    }
+
 
     public static class Query extends ParseQuery<Post> {
 

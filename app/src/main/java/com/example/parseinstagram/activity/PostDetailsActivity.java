@@ -15,8 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.adapter.PostsAdapter;
 import com.example.parseinstagram.model.Post;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +89,29 @@ public class PostDetailsActivity extends AppCompatActivity {
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
 
-                    mPosts.addAll(objects);
-                    adapter.notifyDataSetChanged();
+                    for (int i = 0; i < objects.size(); i++) {
+                        final Post post = objects.get(i);
+
+                        ParseQuery<ParseObject> likeQuery = ParseQuery.getQuery("Like");
+                        likeQuery.whereEqualTo("objectId", post.getObjectId());
+
+                        likeQuery.countInBackground(new CountCallback() {
+                            @Override
+                            public void done(int count, ParseException e) {
+                                if (e == null) {
+                                    post.didCurrentUserLike = (count > 0) ? true : false;
+
+                                } else {
+                                    post.didCurrentUserLike = false;
+                                    Log.e(TAG, "Error getting post like count.");
+                                    e.printStackTrace();
+                                }
+
+                                mPosts.add(post);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
 
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d(TAG, "Post [ " + i + " ] = "

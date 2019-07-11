@@ -66,17 +66,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 @Override
                 public void onClick(View view) {
                     goToPostDetails();
-
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("postId", post.getObjectId());
-//
-//                    PostDetailsFragment postDetailsFragment = new PostDetailsFragment();
-//                    postDetails.setArguments(bundle);
-//
-//                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                    //fragmentTransaction.replace(R.id.placeholder, postDetailsFragment);
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
                 }
             });
         }
