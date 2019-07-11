@@ -96,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         user.setUsername(username);
         user.setPassword(password);
 
+        user.put("fullname", "");
+        user.put("website", "");
+        user.put("bio","");
+
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {

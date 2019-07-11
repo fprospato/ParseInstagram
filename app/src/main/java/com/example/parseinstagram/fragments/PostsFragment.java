@@ -181,7 +181,7 @@ public class PostsFragment extends Fragment {
             @Override
             public void done(final List<Post> objects, ParseException e) {
                 if (e == null) {
-
+                    int postCount = 0;
 
                     for (int i = 0; i < objects.size(); i++) {
                         final Post post = objects.get(i);
@@ -212,9 +212,7 @@ public class PostsFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
 
-                                if (mPosts.size() == objects.size()) {
-                                    isLoading = false;
-                                }
+                                isLoading = false;
                             }
                         });
                     }

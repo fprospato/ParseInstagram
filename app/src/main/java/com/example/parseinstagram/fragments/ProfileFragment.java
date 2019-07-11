@@ -1,10 +1,13 @@
 package com.example.parseinstagram.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +22,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.parseinstagram.R;
+import com.example.parseinstagram.activity.EditProfileActivity;
 import com.example.parseinstagram.adapter.ProfileAdapter;
 import com.example.parseinstagram.model.Post;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -39,10 +46,13 @@ public class ProfileFragment extends Fragment {
     private TextView tvPostCount;
     private TextView tvName;
     private TextView tvBio;
+    private Button btnEditProfile;
 
     private RecyclerView rvPosts;
     private ProfileAdapter adapter;
     private List<Post> mPosts;
+
+    ParseObject user;
 
 
     @Nullable
@@ -59,6 +69,7 @@ public class ProfileFragment extends Fragment {
         tvPostCount = view.findViewById(R.id.tvPostCount);
         tvName = view.findViewById(R.id.tvName);
         tvBio = view.findViewById(R.id.tvBio);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
         rvPosts = view.findViewById(R.id.rvPosts);
@@ -74,7 +85,20 @@ public class ProfileFragment extends Fragment {
         setUserInfo();
 
         getPosts();
+
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToEditProfile();
+            }
+        });
     }
+
+    private void goToEditProfile() {
+        Intent intent = new Intent(getContext(), EditProfileActivity.class);
+        startActivity(intent);
+    }
+
 
     private void setupPullToRefresh() {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,21 +114,41 @@ public class ProfileFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
+
     private void setUserInfo() {
-        String fullname = ParseUser.getCurrentUser().getString("fullname");
-        tvName.setText(fullname);
+        ParseQuery<ParseObject> userQuery = ParseQuery.getQuery("_User");
+        userQuery.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    user = object;
 
-        String bio = ParseUser.getCurrentUser().getString("bio");
-        if (bio != null)
-            tvBio.setText(bio);
+                    tvName.setText(object.getString("fullname"));
 
-        ParseFile profileImage = ParseUser.getCurrentUser().getParseFile("profileImage");
-        if (profileImage != null) {
-            Glide.with(getContext())
-                    .load(profileImage.getUrl())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(ivProfilePhoto);
-        }
+                    String bio = object.getString("bio");
+                    String website = object.getString("website");
+
+                    if (bio == "" && website != "") {
+                        tvBio.setText(website);
+                    } else if (bio != "" && website == "") {
+                        tvBio.setText(bio);
+                    } else if (bio != "" && website != "") {
+                        tvBio.setText(Html.fromHtml(bio + "<br/>" + website));
+                    }
+
+                    ParseFile profileImage = object.getParseFile("profileImage");
+                    if (profileImage != null) {
+                        Glide.with(getContext())
+                                .load(profileImage.getUrl())
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(ivProfilePhoto);
+                    }
+                } else {
+                    Log.e(TAG, "Error finding user.");
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
