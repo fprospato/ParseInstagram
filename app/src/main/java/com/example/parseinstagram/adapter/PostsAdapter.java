@@ -6,6 +6,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
+        holder.post = post;
 
         holder.bind(post);
     }
@@ -63,6 +65,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDescription;
         private TextView tvTime;
 
+        private ImageView ivLike;
+        private Button btnLike;
+
+        Post post;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,9 +79,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivPostImage = itemView.findViewById(R.id.ivPostImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvTime = itemView.findViewById(R.id.tvTime);
-
+            ivLike = itemView.findViewById(R.id.ivLike);
+            btnLike = itemView.findViewById(R.id.btnLike);
 
             ivPostImage.getLayoutParams().height = HomeActivity.screenWidth;
+
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    likePost();
+                }
+            });
         }
 
         public void bind(Post post) {
@@ -99,7 +114,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (postImage != null) {
                 Glide.with(context).load(postImage.getUrl()).into(ivPostImage);
             }
+
+            if (didCurrentUserLike()) {
+                ivLike.setImageResource(R.drawable.ufi_heart_active);
+            } else {
+                ivLike.setImageResource(R.drawable.ufi_heart);
+            }
         }
+
+        private boolean didCurrentUserLike() {
+            return false;
+        }
+
+        private void likePost() {
+
+        }
+
     }
 
     public void clear() {

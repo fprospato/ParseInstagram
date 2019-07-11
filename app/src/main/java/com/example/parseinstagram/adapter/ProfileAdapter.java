@@ -1,6 +1,7 @@
 package com.example.parseinstagram.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.parseinstagram.R;
+import com.example.parseinstagram.activity.PostDetailsActivity;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseFile;
 
@@ -38,6 +40,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
+        holder.post = post;
 
         holder.bind(post);
     }
@@ -51,10 +54,31 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         private ImageView ivPostImage;
 
+        private Post post;
+
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ivPostImage = itemView.findViewById(R.id.ivPostImage);
+
+            ivPostImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToPostDetails();
+
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("postId", post.getObjectId());
+//
+//                    PostDetailsFragment postDetailsFragment = new PostDetailsFragment();
+//                    postDetails.setArguments(bundle);
+//
+//                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                    //fragmentTransaction.replace(R.id.placeholder, postDetailsFragment);
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+                }
+            });
         }
 
         public void bind(Post post) {
@@ -62,6 +86,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             if (postImage != null) {
                 Glide.with(context).load(postImage.getUrl()).into(ivPostImage);
             }
+        }
+
+        private void goToPostDetails() {
+            Intent intent = new Intent(context, PostDetailsActivity.class);
+            intent.putExtra("postId", post.getObjectId());
+
+            context.startActivity(intent);
         }
     }
 

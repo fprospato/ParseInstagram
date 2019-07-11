@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.PostDetailsActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -25,7 +26,7 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.HomeActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -35,9 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
     </application>
 
 </manifest>

@@ -53,7 +53,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/ivProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/ivLike" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -65,7 +65,7 @@
         app:srcCompat="@drawable/ufi_more" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/ivLike"
         android:layout_width="26dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
@@ -78,8 +78,8 @@
         android:layout_width="26dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/ivLike"
+        app:layout_constraintTop_toTopOf="@+id/ivLike"
         app:srcCompat="@drawable/ufi_comment" />
 
     <ImageView
@@ -107,5 +107,15 @@
         android:text="Time"
         app:layout_constraintStart_toStartOf="@+id/tvDescription"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+
+    <Button
+        android:id="@+id/btnLike"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
