@@ -20,6 +20,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,8 @@ public class PostDetailsActivity extends AppCompatActivity {
                         final Post post = objects.get(i);
 
                         ParseQuery<ParseObject> likeQuery = ParseQuery.getQuery("Like");
-                        likeQuery.whereEqualTo("objectId", post.getObjectId());
+                        likeQuery.whereEqualTo("post", post);
+                        likeQuery.whereEqualTo("user", ParseUser.getCurrentUser());
 
                         likeQuery.countInBackground(new CountCallback() {
                             @Override

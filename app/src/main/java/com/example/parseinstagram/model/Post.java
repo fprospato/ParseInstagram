@@ -6,8 +6,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.Date;
+
 @ParseClassName("Post")
-public class Post extends ParseObject {
+public class Post extends ParseObject implements Comparable<Post> {
 
     private final static String TAG = "Post";
 
@@ -17,6 +19,7 @@ public class Post extends ParseObject {
     private static final String KEY_LIKE_COUNT = "likeCount";
 
     public boolean didCurrentUserLike;
+    public Date createdAt;
 
 
     public String getDescription() {
@@ -65,6 +68,17 @@ public class Post extends ParseObject {
             include("user");
             return this;
         }
+    }
+
+    @Override
+    public int compareTo(Post post) {
+        if (this.createdAt.compareTo(post.createdAt) == -1) {
+            return 1;
+        } else if (this.createdAt.compareTo(post.createdAt) == 1) {
+            return -1;
+        }
+
+        return 0;
     }
 
 }

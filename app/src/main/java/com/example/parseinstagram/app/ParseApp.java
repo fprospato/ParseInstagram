@@ -1,4 +1,4 @@
-package com.example.parseinstagram;
+package com.example.parseinstagram.app;
 
 import android.app.Application;
 
