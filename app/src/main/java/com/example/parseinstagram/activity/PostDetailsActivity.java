@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,8 +59,20 @@ public class PostDetailsActivity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.insta_action_bar);
-        //getSupportActionBar().setElevation(0);
+        getSupportActionBar().setElevation(2);
+
         View view = getSupportActionBar().getCustomView();
+        ImageView ivLeft = view.findViewById(R.id.ivLeft);
+        ImageView ivCenter = view.findViewById(R.id.ivCenter);
+        ImageView ivRight = view.findViewById(R.id.ivRight);
+        TextView tvCenter = view.findViewById(R.id.tvCenter);
+
+        ivLeft.setVisibility(View.INVISIBLE);
+        ivCenter.setVisibility(View.INVISIBLE);
+        ivRight.setVisibility(View.INVISIBLE);
+        tvCenter.setVisibility(View.VISIBLE);
+
+        tvCenter.setText("Post");
     }
 
 

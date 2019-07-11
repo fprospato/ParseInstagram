@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.example.parseinstagram.fragments.ComposeFragment;
 import com.example.parseinstagram.fragments.PostsFragment;
 import com.example.parseinstagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -59,13 +62,66 @@ public class HomeActivity extends AppCompatActivity {
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.insta_grey)));
 
+        setHomeBarDesign();
+    }
+
+    private void setHomeBarDesign() {
         this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.insta_action_bar);
-        //getSupportActionBar().setElevation(0);
+        getSupportActionBar().setElevation(2);
+
         View view = getSupportActionBar().getCustomView();
+        ImageView ivLeft = view.findViewById(R.id.ivLeft);
+        ImageView ivCenter = view.findViewById(R.id.ivCenter);
+        ImageView ivRight = view.findViewById(R.id.ivRight);
+        TextView tvCenter = view.findViewById(R.id.tvCenter);
+
+        ivLeft.setVisibility(View.VISIBLE);
+        ivCenter.setVisibility(View.VISIBLE);
+        ivRight.setVisibility(View.VISIBLE);
+        tvCenter.setVisibility(View.INVISIBLE);
     }
 
+    private void setComposeBarDesign() {
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.insta_action_bar);
+        getSupportActionBar().setElevation(2);
+
+        View view = getSupportActionBar().getCustomView();
+        ImageView ivLeft = view.findViewById(R.id.ivLeft);
+        ImageView ivCenter = view.findViewById(R.id.ivCenter);
+        ImageView ivRight = view.findViewById(R.id.ivRight);
+        TextView tvCenter = view.findViewById(R.id.tvCenter);
+
+        ivLeft.setVisibility(View.INVISIBLE);
+        ivCenter.setVisibility(View.INVISIBLE);
+        ivRight.setVisibility(View.INVISIBLE);
+        tvCenter.setVisibility(View.VISIBLE);
+
+        tvCenter.setText("Photo");
+    }
+
+    private void setProfileBarDesign() {
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.insta_action_bar);
+        getSupportActionBar().setElevation(0);
+
+        View view = getSupportActionBar().getCustomView();
+        ImageView ivLeft = view.findViewById(R.id.ivLeft);
+        ImageView ivCenter = view.findViewById(R.id.ivCenter);
+        ImageView ivRight = view.findViewById(R.id.ivRight);
+        TextView tvCenter = view.findViewById(R.id.tvCenter);
+
+        ivLeft.setVisibility(View.INVISIBLE);
+        ivCenter.setVisibility(View.INVISIBLE);
+        ivRight.setVisibility(View.INVISIBLE);
+        tvCenter.setVisibility(View.VISIBLE);
+
+        tvCenter.setText(ParseUser.getCurrentUser().getUsername());
+    }
 
     private void setupNavigationBar() {
 
@@ -78,12 +134,15 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
+                        setHomeBarDesign();
                         fragment = new PostsFragment();
                         break;
                     case R.id.action_compose:
+                        setComposeBarDesign();
                         fragment = new ComposeFragment();
                         break;
                     case R.id.action_profile:
+                        setProfileBarDesign();
                         fragment = new ProfileFragment();
                         break;
                     default:
