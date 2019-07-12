@@ -103,7 +103,7 @@ public class PostsFragment extends Fragment {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser();
         postsQuery.orderByDescending("createdAt");
-        postsQuery.setLimit(10);
+        postsQuery.setLimit(20);
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
