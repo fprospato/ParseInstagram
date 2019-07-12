@@ -24,9 +24,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.example.parseinstagram.helper.BitmapScaler;
-import com.example.parseinstagram.activity.HomeActivity;
 import com.example.parseinstagram.R;
+import com.example.parseinstagram.activity.HomeActivity;
+import com.example.parseinstagram.helper.BitmapScaler;
 import com.example.parseinstagram.model.Post;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -104,7 +104,6 @@ public class ComposeFragment extends Fragment {
             }
         });
     }
-
 
     private void createPost(String description, ParseFile imageFile, ParseUser user) {
         pb.setVisibility(View.VISIBLE);

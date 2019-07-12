@@ -55,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText etWebsite;
     EditText etBio;
     Button btnDone;
+    Button btnCancel;
     ProgressBar pb;
 
     ParseUser user;
@@ -105,8 +106,11 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView tvCenter = view.findViewById(R.id.tvCenter);
         TextView tvDone = view.findViewById(R.id.tvDone);
         btnDone = view.findViewById(R.id.btnDone);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        btnCancel = view.findViewById(R.id.btnCancel);
 
-
+        tvCancel.setVisibility(View.VISIBLE);
+        btnCancel.setVisibility(View.VISIBLE);
         ivLeft.setVisibility(View.INVISIBLE);
         ivCenter.setVisibility(View.INVISIBLE);
         ivRight.setVisibility(View.INVISIBLE);
@@ -119,6 +123,13 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveProfile();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

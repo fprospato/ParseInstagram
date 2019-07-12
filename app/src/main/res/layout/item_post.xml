@@ -132,4 +132,15 @@
         app:layout_constraintStart_toStartOf="@+id/ivProfilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/ivLike" />
 
+    <Button
+        android:id="@+id/btnProfile"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvName"
+        app:layout_constraintEnd_toEndOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

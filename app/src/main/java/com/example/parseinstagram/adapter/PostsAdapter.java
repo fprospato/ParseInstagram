@@ -1,6 +1,7 @@
 package com.example.parseinstagram.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.parseinstagram.R;
 import com.example.parseinstagram.activity.HomeActivity;
+import com.example.parseinstagram.activity.ProfileActivity;
 import com.example.parseinstagram.model.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -73,6 +75,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDescription;
         private TextView tvTime;
 
+        private Button btnProfile;
         private TextView tvLikeCount;
         private ImageView ivLike;
         private Button btnLike;
@@ -91,6 +94,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivLike = itemView.findViewById(R.id.ivLike);
             btnLike = itemView.findViewById(R.id.btnLike);
             tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            btnProfile = itemView.findViewById(R.id.btnProfile);
 
             ivPostImage.getLayoutParams().height = HomeActivity.screenWidth;
 
@@ -98,6 +102,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     likePost();
+                }
+            });
+            btnProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToProfile();
                 }
             });
         }
@@ -182,6 +192,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     }
                 }
             });
+        }
+
+        private void goToProfile() {
+            Intent intent = new Intent(context, ProfileActivity.class);
+
+            intent.putExtra("username", post.getUser().getUsername());
+            intent.putExtra("userId", post.getUser().getObjectId());
+
+            context.startActivity(intent);
         }
     }
 

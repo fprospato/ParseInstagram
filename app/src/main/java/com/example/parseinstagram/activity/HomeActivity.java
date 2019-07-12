@@ -80,7 +80,11 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvCenter = view.findViewById(R.id.tvCenter);
         TextView tvDone = view.findViewById(R.id.tvDone);
         Button btnDone = view.findViewById(R.id.btnDone);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
 
+        tvCancel.setVisibility(View.INVISIBLE);
+        btnCancel.setVisibility(View.INVISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.VISIBLE);
@@ -104,7 +108,11 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvCenter = view.findViewById(R.id.tvCenter);
         TextView tvDone = view.findViewById(R.id.tvDone);
         Button btnDone = view.findViewById(R.id.btnDone);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
 
+        tvCancel.setVisibility(View.INVISIBLE);
+        btnCancel.setVisibility(View.INVISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.INVISIBLE);
@@ -128,7 +136,11 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvCenter = view.findViewById(R.id.tvCenter);
         TextView tvDone = view.findViewById(R.id.tvDone);
         Button btnDone = view.findViewById(R.id.btnDone);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
 
+        tvCancel.setVisibility(View.INVISIBLE);
+        btnCancel.setVisibility(View.INVISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         btnDone.setVisibility(View.INVISIBLE);
         ivLeft.setVisibility(View.INVISIBLE);
@@ -173,6 +185,11 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.action_profile:
                         setProfileBarDesign();
                         fragment = new ProfileFragment();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userId", ParseUser.getCurrentUser().getObjectId());
+                        fragment.setArguments(bundle);
+
                         break;
                     default:
                         break;

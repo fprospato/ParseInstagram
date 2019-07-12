@@ -73,15 +73,26 @@ public class PostDetailsActivity extends AppCompatActivity {
         TextView tvCenter = view.findViewById(R.id.tvCenter);
         TextView tvDone = view.findViewById(R.id.tvDone);
         Button btnDone = view.findViewById(R.id.btnDone);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
 
+        tvCancel.setVisibility(View.INVISIBLE);
+        btnCancel.setVisibility(View.VISIBLE);
         tvDone.setVisibility(View.INVISIBLE);
         btnDone.setVisibility(View.INVISIBLE);
-        ivLeft.setVisibility(View.INVISIBLE);
+        ivLeft.setVisibility(View.VISIBLE);
         ivCenter.setVisibility(View.INVISIBLE);
         ivRight.setVisibility(View.INVISIBLE);
         tvCenter.setVisibility(View.VISIBLE);
 
+        ivLeft.setImageResource(R.drawable.insta_back_arrow);
         tvCenter.setText("Post");
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 

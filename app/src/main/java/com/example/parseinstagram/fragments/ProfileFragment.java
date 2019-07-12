@@ -53,11 +53,22 @@ public class ProfileFragment extends Fragment {
     private List<Post> mPosts;
 
     ParseObject user;
+    String userId;
+    boolean isCurrentUser;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        String userId = getArguments().getString("userId");
+        if (userId != null && userId != ParseUser.getCurrentUser().getObjectId()) {
+            isCurrentUser = false;
+            this.userId = userId;
+        } else {
+            isCurrentUser = true;
+            this.userId = ParseUser.getCurrentUser().getObjectId();
+        }
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -71,6 +82,10 @@ public class ProfileFragment extends Fragment {
         tvBio = view.findViewById(R.id.tvBio);
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
+        if (!isCurrentUser) {
+            btnEditProfile.getLayoutParams().height = 0;
+        }
+
         swipeContainer = view.findViewById(R.id.swipeContainer);
         rvPosts = view.findViewById(R.id.rvPosts);
         mPosts = new ArrayList<>();
@@ -83,8 +98,6 @@ public class ProfileFragment extends Fragment {
         setupPullToRefresh();
 
         setUserInfo();
-
-        getPosts();
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +130,7 @@ public class ProfileFragment extends Fragment {
 
     private void setUserInfo() {
         ParseQuery<ParseObject> userQuery = ParseQuery.getQuery("_User");
-        userQuery.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+        userQuery.getInBackground(userId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -143,6 +156,9 @@ public class ProfileFragment extends Fragment {
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(ivProfilePhoto);
                     }
+
+                    getPosts();
+
                 } else {
                     Log.e(TAG, "Error finding user.");
                     e.printStackTrace();
@@ -154,7 +170,7 @@ public class ProfileFragment extends Fragment {
 
     private void getPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+        postsQuery.whereEqualTo("user", user);
         postsQuery.orderByDescending("createdAt");
 
         postsQuery.findInBackground(new FindCallback<Post>() {
