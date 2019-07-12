@@ -36,8 +36,11 @@ The following **stretch** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Add exact Instagram UI throughout app (except when making a post)
+- [x] Near exact Instagram UI throughout app (except when making a post)
 - [x] See and like and post from any account in either in a profile view or in timeline
+- [x] User's can have have a bio, website, and their fullname on their profile
+- [x] Website links are clickable on a profile
+- [x] Can edit profile
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
